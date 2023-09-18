@@ -1,6 +1,5 @@
 <?php
 
-use Porygon\Base\Models\User;
 use Porygon\Base\Models\RequestLog;
 
 return [

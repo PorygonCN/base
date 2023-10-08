@@ -31,9 +31,12 @@ class LogRequest
     public function terminate($request, $response)
     {
         $logClass = config("p-base.model.request_logs");
-        /** @var RequestLog */
-        $log = $logClass::fromRequest($request);
+        if ($logClass) {
 
-        $log->fillResponse($response)->save();
+            /** @var RequestLog */
+            $log = $logClass::fromRequest($request);
+
+            $log->fillResponse($response)->save();
+        }
     }
 }

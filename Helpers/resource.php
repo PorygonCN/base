@@ -15,11 +15,19 @@ if (!function_exists("getPerpage")) {
      */
     function getTicket(String $param, $ttl = 604800)
     {
-        $app = app("wechat.official_account");
-        $result = $app->qrcode->temporary($param, $ttl);
-        $ticket = $result['ticket'];
-        $url = $app->qrcode->url($ticket);
-        return ["ticket" => $ticket, "url" => $url];
+        $app      = app("easywechat.official_account");
+        $api      = $app->getClient();
+        $response = $api->postJson('/cgi-bin/qrcode/create', [
+            "expire_seconds" => $ttl,
+            "action_name"    => "QR_STR_SCENE",
+            "action_info"    => [
+                "scene" => [
+                    "scene_str" => $param,
+                ]
+            ]
+        ]);
+
+        return $response;
     }
 }
 

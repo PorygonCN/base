@@ -3,7 +3,9 @@
 namespace Porygon\Base\Middleware;
 
 use Closure;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Porygon\Base\Models\RequestLog;
 
 class LogRequest
@@ -30,13 +32,18 @@ class LogRequest
      */
     public function terminate($request, $response)
     {
-        $logClass = config("p-base.model.request_logs");
+        $logClass = config("porygon-base.model.request_logs", RequestLog::class);
         if ($logClass) {
+            try {
+                /** @var RequestLog */
+                $log = $logClass::fromRequest($request);
 
-            /** @var RequestLog */
-            $log = $logClass::fromRequest($request);
-
-            $log->fillResponse($response)->save();
+                $log->fillResponse($response)->save();
+            } catch (Exception $e) {
+                Log::error("[LogRequest] Generate request log fail! " . $e->getMessage(), $e->getTrace());
+            }
+        } else {
+            Log::info("[LogRequest] RequestLog model undefined! ");
         }
     }
 }

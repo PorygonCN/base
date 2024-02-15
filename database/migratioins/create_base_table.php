@@ -8,12 +8,12 @@ class CreateOutcardTable extends Migration
 {
     public function getConnection()
     {
-        return config('p-base.database.connection');
+        return config('porygon-base.database.connection');
     }
 
     public function config($key)
     {
-        return config('p-base.database.' . $key);
+        return config('porygon-base.database.' . $key);
     }
     public function table($key)
     {

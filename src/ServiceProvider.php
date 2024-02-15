@@ -21,6 +21,9 @@ class ServiceProvider extends SupportServiceProvider
 
     public function boot()
     {
-        $this->publishes([__DIR__ . '/../config/config.php' => config_path('p-base.php')]);
+        $this->publishes([
+            __DIR__ . '/../config/config.php' => config_path('porygon-base.php'),
+            __DIR__ . '/../database/migrations' => database_path('migrations/porygon-base'),
+        ], "porygon-base");
     }
 }
